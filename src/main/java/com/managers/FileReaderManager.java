@@ -1,4 +1,6 @@
-package com.training.configuration;
+package com.managers;
+
+import com.training.configuration.ConfigurationEnv;
 
 public class FileReaderManager {
 
