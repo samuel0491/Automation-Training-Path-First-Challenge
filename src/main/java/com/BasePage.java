@@ -1,6 +1,7 @@
 package com;
 
-import com.training.configuration.FileReaderManager;
+import com.managers.FileReaderManager;
+import com.managers.PageObjectManager;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -14,6 +15,7 @@ public class BasePage {
     protected WebDriver driver;
     protected WebDriverWait wait;
     protected JavascriptExecutor js;
+    PageObjectManager pageObjectManager;
 
     public BasePage(WebDriver driver){
 
@@ -45,5 +47,4 @@ public class BasePage {
 
         driver.navigate().back();
     }
-
 }
