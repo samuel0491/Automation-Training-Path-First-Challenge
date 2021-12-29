@@ -1,28 +1,29 @@
 package com.login.stepdefinitions;
 
+import com.cucumber.TestContext;
 import com.login.pageobject.LoginPageObject;
-import io.cucumber.java.After;
-import io.cucumber.java.Before;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import com.myaccount.pageobject.MyAccountPageObject;
 import org.junit.Assert;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
 
 public class LoginStepDefinitions {
 
-    private LoginPageObject loginPageObject;
-    private WebDriver driver;
+    private final LoginPageObject loginPageObject;
     private MyAccountPageObject myAccountPageObject;
+    private final TestContext testContext;
+
+    public LoginStepDefinitions(TestContext context){
+        testContext = context;
+        loginPageObject = testContext.getPageObjectManager().getLoginPageObject();
+    }
 
     @Given("the user opens the browser and navigates to practice.automationtesting's page")
     public void theUserOpensTheBrowserAndNavigatesToPracticeAutomationtestingSPage() {
 
         String pageTitle = "Automation Practice Site";//TODO: move this value
-        loginPageObject = new LoginPageObject(driver);
         loginPageObject.navigateTo();
         Assert.assertTrue("The titles aren't equals. "+pageTitle,loginPageObject.isRightTheTitle(pageTitle));
     }
@@ -60,7 +61,7 @@ public class LoginStepDefinitions {
     @Then("my account page show up")
     public void myAccountPageShowUp() {
 
-        myAccountPageObject = new MyAccountPageObject(driver);
+        myAccountPageObject = new MyAccountPageObject(testContext.getWebDriverManager().getDriver());
     }
 
     @And("the text {string} is showing")
@@ -110,7 +111,7 @@ public class LoginStepDefinitions {
 
     @When("the user click on sign out option")
     public void theUserClickOnSignOutOption() {
-        myAccountPageObject = new MyAccountPageObject(driver);
+        myAccountPageObject = testContext.getPageObjectManager().getMyAccountPageObject();
         myAccountPageObject.clickOnSignoutOption();
     }
 
@@ -128,20 +129,4 @@ public class LoginStepDefinitions {
         Assert.assertTrue("Login page doesn't changed the forms",loginPageObject.loginAndRegisterFormExists());
 
     }
-
-    @Before
-    public void setUp(){
-        //TODO: put this information in the config file
-        System.setProperty("webdriver.chrome.driver",
-                System.getProperty("user.dir")+"\\src\\main\\resources\\drivers\\"+"chromedriver.exe");//
-
-        driver = new ChromeDriver();
-    }
-
-    @After
-    public void shutDown(){
-
-        driver.quit();
-    }
-
 }
