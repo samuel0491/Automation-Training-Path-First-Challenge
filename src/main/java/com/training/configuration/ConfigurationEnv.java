@@ -29,7 +29,6 @@ public class ConfigurationEnv {
         }
     }
 
-    //TODO: refactor this line
     public String getSpecificProperty(String property){
 
         String rProperty = properties.getProperty(property);
@@ -39,5 +38,51 @@ public class ConfigurationEnv {
         else
             return rProperty;
 
+    }
+
+    public String getURLPracticePage(){
+
+        String URLPage = properties.getProperty("URLAutomationPracticeSite");
+        if(URLPage == null)
+            throw new RuntimeException("URL page value not specified in the config.properties file");
+        else
+            return URLPage;
+    }
+
+    public boolean windowMaximized(){
+
+        String windowMaximized = properties.getProperty("windowMaximized");
+
+        if(windowMaximized == null)
+            throw new RuntimeException("Window size value not specified in the config.properties file");
+        else
+            return Boolean.parseBoolean(windowMaximized);
+    }
+
+    public long getImplicittWaitTimeOut(){
+
+        String explicitWait = properties.getProperty("ExplicitWaitTimeOut");
+        if(explicitWait == null)
+            throw new RuntimeException("Explicit wait time not specified in the config.properties file");
+        else
+            return Long.parseLong(explicitWait);
+    }
+
+    public long getExplicitWaitTimeOut(){
+
+        String explicitWait = properties.getProperty("ExplicitWaitTimeOut");
+        if(explicitWait == null)
+            throw new RuntimeException("Implicit wait time not specified in the config.properties file");
+        else
+            return Long.parseLong(explicitWait);
+    }
+
+    public String getHomePageTitle(){
+
+        String homePageTitle = properties.getProperty("homepage_tile");
+        if(homePageTitle == null)
+            throw new RuntimeException("Home page title value not specified in the config.properties file");
+        else
+            return homePageTitle;
     }
 }

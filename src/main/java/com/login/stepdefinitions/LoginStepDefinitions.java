@@ -2,6 +2,8 @@ package com.login.stepdefinitions;
 
 import com.cucumber.TestContext;
 import com.login.pageobject.LoginPageObject;
+import com.managers.FileReaderManager;
+import com.training.configuration.ConfigurationEnv;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -14,17 +16,17 @@ public class LoginStepDefinitions {
     private final LoginPageObject loginPageObject;
     private MyAccountPageObject myAccountPageObject;
     private final TestContext testContext;
+    private ConfigurationEnv configurationEnv;
 
     public LoginStepDefinitions(TestContext context){
         testContext = context;
         loginPageObject = testContext.getPageObjectManager().getLoginPageObject();
     }
 
-    //TODO: refactor this steps name and everyone
     @Given("the user opens the browser and navigates to practice.automationtesting's page")
     public void OpenTheBrowserAndNavigatesToPage() {
 
-        String pageTitle = "Automation Practice Site";//TODO: move this value to config file
+        String pageTitle = FileReaderManager.getInstance().getConfigurationEnvReader().getHomePageTitle();
         loginPageObject.navigateTo();
         Assert.assertTrue("The titles aren't equals. "+pageTitle,loginPageObject.isRightTheTitle(pageTitle));
     }
