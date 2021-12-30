@@ -20,40 +20,41 @@ public class LoginStepDefinitions {
         loginPageObject = testContext.getPageObjectManager().getLoginPageObject();
     }
 
+    //TODO: refactor this steps name and everyone
     @Given("the user opens the browser and navigates to practice.automationtesting's page")
-    public void theUserOpensTheBrowserAndNavigatesToPracticeAutomationtestingSPage() {
+    public void OpenTheBrowserAndNavigatesToPage() {
 
-        String pageTitle = "Automation Practice Site";//TODO: move this value
+        String pageTitle = "Automation Practice Site";//TODO: move this value to config file
         loginPageObject.navigateTo();
         Assert.assertTrue("The titles aren't equals. "+pageTitle,loginPageObject.isRightTheTitle(pageTitle));
     }
 
     @And("the user click on My Account option")
-    public void theUserClickOnMyAccountOption() {
+    public void userClickOnMyAccountOption() {
         loginPageObject.clickOnMyAccountOption();
 
     }
 
     @Then("the login and register form should show up")
-    public void theLoginAndRegisterFormShouldShowUp() {
+    public void loginAndRegisterFormShouldShowUp() {
 
         Assert.assertTrue("Login page doesn't changed the forms",loginPageObject.loginAndRegisterFormExists());
     }
 
     @Given("the user typed his username {string}")
-    public void theUserTypedHisUsername(String username) {
+    public void userTypedHisUsername(String username) {
 
         loginPageObject.enterUserName(username);
     }
 
     @And("the user typed his password {string}")
-    public void theUserTypedHisPassword(String password) {
+    public void userTypedHisPassword(String password) {
 
         loginPageObject.enterUserPassword(password);
     }
 
     @When("the user presses login button")
-    public void theUserPressesLoginButton() {
+    public void userPressesLoginButton() {
 
         loginPageObject.clickOnLoginButton();
     }
@@ -65,13 +66,13 @@ public class LoginStepDefinitions {
     }
 
     @And("the text {string} is showing")
-    public void theTextIsShowing(String welcomedText) {
+    public void welcomedTextIsShowing(String welcomedText) {
         Assert.assertTrue("The Welcome Text are different",myAccountPageObject.wasSucessfulLogin(welcomedText));
     }
 
 
     @Given("the user typed his credentials {string} and {string}")
-    public void theUserTypedHisCredentialsAnd(String username, String password) {
+    public void userTypedHisCredentials(String username, String password) {
 
         loginPageObject.enterUserName(username);
         loginPageObject.enterUserPassword(password);
@@ -85,13 +86,13 @@ public class LoginStepDefinitions {
     }
 
     @When("the user typed username as {string}")
-    public void theUserTypedUsernameAs(String username) {
+    public void userTypedUsername(String username) {
 
         loginPageObject.enterUserName(username);
     }
 
     @And("the user typed password as {string}")
-    public void theUserTypedPasswordAs(String password) {
+    public void userTypedPassword(String password) {
 
         loginPageObject.enterUserPassword(password);
     }
@@ -104,19 +105,19 @@ public class LoginStepDefinitions {
     }
 
     @Given("user is logged in successful")
-    public void user_is_logged_in_successful(io.cucumber.datatable.DataTable dataTable) {
+    public void userLoggedInSuccessful(io.cucumber.datatable.DataTable dataTable) {
 
         loginPageObject.setLoginSuccessful(dataTable);
     }
 
     @When("the user click on sign out option")
-    public void theUserClickOnSignOutOption() {
+    public void userClickOnSignOutOption() {
         myAccountPageObject = testContext.getPageObjectManager().getMyAccountPageObject();
         myAccountPageObject.clickOnSignoutOption();
     }
 
     @And("the user click on browser back button")
-    public void theUserClickOnBrowserBackButton() {
+    public void userClickOnBrowserBackButton() {
 
         loginPageObject.backButtonBrowser();
         Assert.assertTrue("Login page doesn't changed the forms",loginPageObject.loginAndRegisterFormExists());
@@ -124,7 +125,7 @@ public class LoginStepDefinitions {
     }
 
     @Then("the user should not be logged in")
-    public void theUserShouldNotBeLoggedIn() {
+    public void userShouldNotBeLoggedIn() {
 
         Assert.assertTrue("Login page doesn't changed the forms",loginPageObject.loginAndRegisterFormExists());
 
