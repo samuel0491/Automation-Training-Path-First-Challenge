@@ -5,8 +5,7 @@ import java.util.Properties;
 
 public class ConfigurationEnv {
 
-    private Properties properties;
-    private InputStream inputStream;
+    private final Properties properties;
 
     public ConfigurationEnv(){
 
@@ -29,17 +28,6 @@ public class ConfigurationEnv {
         }
     }
 
-    public String getSpecificProperty(String property){
-
-        String rProperty = properties.getProperty(property);
-
-        if(rProperty == null)
-            throw new RuntimeException("path not found in the config.properties file");
-        else
-            return rProperty;
-
-    }
-
     public String getURLPracticePage(){
 
         String URLPage = properties.getProperty("URLAutomationPracticeSite");
@@ -59,7 +47,7 @@ public class ConfigurationEnv {
             return Boolean.parseBoolean(windowMaximized);
     }
 
-    public long getImplicittWaitTimeOut(){
+    public long getImplicitWaitTimeOut(){
 
         String explicitWait = properties.getProperty("ExplicitWaitTimeOut");
         if(explicitWait == null)

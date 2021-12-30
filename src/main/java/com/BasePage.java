@@ -29,7 +29,7 @@ public class BasePage {
 
         driver.manage().timeouts().pageLoadTimeout(FileReaderManager.getInstance()
                                                                     .getConfigurationEnvReader()
-                                                                    .getImplicittWaitTimeOut(),
+                                                                    .getImplicitWaitTimeOut(),
                                                     TimeUnit.SECONDS);
 
         if(FileReaderManager.getInstance().getConfigurationEnvReader().windowMaximized()) {
