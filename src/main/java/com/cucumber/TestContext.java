@@ -1,21 +1,21 @@
 package com.cucumber;
 
 import com.managers.PageObjectManager;
-import com.managers.WebDriverManager;
+import com.managers.WebDriverHandler;
 
 //this class has only the responsibility to share Test Context, Scenario Context, Test State
 //between our step definitions file
 public class TestContext {
 
     private final PageObjectManager pageObjectManager;
-    private final WebDriverManager webDriverManager;
+    private final WebDriverHandler webDriverManager;
 
     public TestContext(){
-        webDriverManager = new WebDriverManager();
+        webDriverManager = new WebDriverHandler();
         pageObjectManager = new PageObjectManager(webDriverManager.getDriver());
     }
 
-    public WebDriverManager getWebDriverManager(){
+    public WebDriverHandler getWebDriverManager(){
         return webDriverManager;
     }
 
