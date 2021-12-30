@@ -26,7 +26,7 @@ Feature: My Account Login functionality
 #      |sqa@test.com   |qa2k21.          |ERROR: The password you entered for the username sqa@test.com is incorrect.|
 #      |               |Qa2k21.          |Error: Username is required.|
 #      |hjdshjdhjdhj   |kjdsjkdsjkdsjk   |ERROR: Invalid username.|
-
+#
 #  Scenario: TC0003 - Login - Password field should be masked
 #     When the user typed username as "sqa@test.com"
 #     And the user typed password as "Qa2k21."

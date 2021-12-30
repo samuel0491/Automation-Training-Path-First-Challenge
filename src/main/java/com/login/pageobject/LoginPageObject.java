@@ -78,27 +78,17 @@ public class LoginPageObject extends BasePage {
 
     public boolean isRightTheTitle(String title){
 
-        if(title.contentEquals(getPageTitle()))
-            return true;
-        else
-            return false;
+        return title.contentEquals(getPageTitle());
     }
 
     public boolean areEqualsLoginMessagesError(String message){
 
-        //TODO: this logic could be better
-        //String textPage = getLoginErrorMesage().substring(0,getLoginErrorMesage().indexOf("L"));
-        //I used contains instead of containsEquals, because one of the messages
-        //have the username as part of the text
         return getLoginErrorMesage().contains(message);
     }
 
     public boolean isPasswordFieldTypeExpected(String fieldType){
 
-        if(passwordLoginInputField.getAttribute("type").contentEquals(fieldType))
-            return true;
-        else
-            return false;
+        return passwordLoginInputField.getAttribute("type").contentEquals(fieldType);
     }
 
     public void setLoginSuccessful(DataTable table){

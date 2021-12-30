@@ -29,6 +29,7 @@ public class ConfigurationEnv {
         }
     }
 
+    //TODO: refactor this line
     public String getSpecificProperty(String property){
 
         String rProperty = properties.getProperty(property);
