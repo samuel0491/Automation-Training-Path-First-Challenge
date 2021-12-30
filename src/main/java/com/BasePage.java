@@ -18,16 +18,23 @@ public class BasePage {
     public BasePage(WebDriver driver){
 
         this.driver = driver;
-        wait = new WebDriverWait(driver, Duration.ofSeconds(20));
+        wait = new WebDriverWait(driver, Duration.ofSeconds(FileReaderManager.getInstance()
+                                                                            .getConfigurationEnvReader()
+                                                                            .getExplicitWaitTimeOut()));
     }
 
     public void navigateTo(){
 
-        driver.navigate().to(FileReaderManager.getInstance().getConfigurationEnvReader().getSpecificProperty("URLAutomationPracticeSite"));
-        //TODO: validate title page
-        driver.manage().timeouts().pageLoadTimeout(20, TimeUnit.SECONDS);
-        driver.manage().window().maximize();
+        driver.navigate().to(FileReaderManager.getInstance().getConfigurationEnvReader().getURLPracticePage());
 
+        driver.manage().timeouts().pageLoadTimeout(FileReaderManager.getInstance()
+                                                                    .getConfigurationEnvReader()
+                                                                    .getImplicittWaitTimeOut(),
+                                                    TimeUnit.SECONDS);
+
+        if(FileReaderManager.getInstance().getConfigurationEnvReader().windowMaximized()) {
+            driver.manage().window().maximize();
+        }
     }
 
     public void waitVisibilityOfElement(WebElement element){
