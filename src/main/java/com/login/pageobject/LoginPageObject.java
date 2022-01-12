@@ -38,11 +38,6 @@ public class LoginPageObject extends BasePage {
 
     //actions on elements
 
-    public String getPageTitle(){
-
-        return driver.getTitle();
-    }
-
     public boolean loginAndRegisterFormExists(){
 
         waitVisibilityOfElement(loginRegisterForms);
@@ -51,7 +46,7 @@ public class LoginPageObject extends BasePage {
 
     public void clickOnMyAccountOption(){
 
-        myAccountOption.click();
+        clickOnButtonOption(myAccountOption);
     }
 
     public void enterUserName(String username){
@@ -66,7 +61,7 @@ public class LoginPageObject extends BasePage {
 
     public void clickOnLoginButton(){
 
-        loginButton.click();
+        clickOnButtonOption(loginButton);
 
     }
 
@@ -74,11 +69,6 @@ public class LoginPageObject extends BasePage {
 
             waitVisibilityOfElement(loginErrorMessage);
         return loginErrorMessage.getText();
-    }
-
-    public boolean isRightTheTitle(String title){
-
-        return title.contentEquals(getPageTitle());
     }
 
     public boolean areEqualsLoginMessagesError(String message){
@@ -95,7 +85,7 @@ public class LoginPageObject extends BasePage {
 
         usernameLoginInputField.sendKeys(table.asList().get(0));
         passwordLoginInputField.sendKeys(table.asList().get(1));
-        loginButton.click();
+        clickOnButtonOption(loginButton);
     }
 
 }

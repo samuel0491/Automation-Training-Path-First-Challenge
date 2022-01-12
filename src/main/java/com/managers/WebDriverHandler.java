@@ -29,6 +29,6 @@ public class WebDriverHandler {
     public void shutDown(){
 
         driver.close();
-       // driver.quit();
+        driver.quit();
     }
 }

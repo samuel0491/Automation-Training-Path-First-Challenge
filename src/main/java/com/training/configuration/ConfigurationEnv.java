@@ -73,4 +73,13 @@ public class ConfigurationEnv {
         else
             return homePageTitle;
     }
+
+    public String getShopPageTitle(){
+
+        String shopageTitle = properties.getProperty("shopage_title");
+        if(shopageTitle == null)
+            throw new RuntimeException("Shop page title value not specified in the config.properties file");
+        else
+            return shopageTitle;
+    }
 }
