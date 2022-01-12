@@ -1,41 +1,76 @@
 package com.shop;
 
+import com.cucumber.TestContext;
+import com.login.pageobject.LoginPageObject;
+import com.managers.FileReaderManager;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import org.junit.Assert;
 
 public class ShopStepDefinitions {
+
+   // private final LoginPageObject loginPageObject;
+    private final ShopPageObject shopPageObject;
+    private final TestContext context;
+
+    public ShopStepDefinitions(TestContext context){
+
+        this.context = context;
+       // loginPageObject = context.getPageObjectManager().getLoginPageObject();
+        shopPageObject = context.getPageObjectManager().getShopPageObject();
+    }
+
     @Given("the user open the browser and navigates to practice.automationtesting page")
-    public void theUserOpenTheBrowserAndNavigatesToPracticeAutomationtestingPage() {
+    public void userOpenTheBrowserAndNavigatesToPage() {
+
+        shopPageObject.navigateTo();
     }
 
     @And("the user click on Shop menu")
     public void theUserClickOnShopMenu() {
+
+       String pageTitle = FileReaderManager.getInstance().getConfigurationEnvReader().getShopPageTitle();
+       System.out.println("config: "+pageTitle);
+       shopPageObject.clickOnShopOption();
+       //TODO: fix the issue with the special character
+       //Assert.assertTrue("The titles aren't equals. "+pageTitle,shopPageObject.isRightTheTitle(pageTitle));
     }
 
     @Then("the shop page is displayed")
     public void theShopPageIsDisplayed() {
+     Assert.assertTrue("Shop page doesn't changed the Side Bar",shopPageObject.waitShopSideBarExists());
     }
 
     @Given("the user adjust the filter by price between {int} {int} rps")
-    public void theUserAdjustTheFilterByPriceBetweenRps(int arg0, int arg1) {
+    public void userAdjustTheFilterByPriceBetweenMinAndMax(int min_price, int max_price) {
+      shopPageObject.movePriceSideBar(min_price,max_price);
     }
 
     @When("the user click on the filter button")
     public void theUserClickOnTheFilterButton() {
+
+     shopPageObject.clickOnFilterButton();
     }
 
     @Then("user can view books only between {int} to {int} rps price")
-    public void userCanViewBooksOnlyBetweenToRpsPrice(int arg0, int arg1) {
+    public void userCanViewBooksOnlyBetweenToMinMaxPrices(double min, double max) {
+
+     Assert.assertTrue("At least a book price in the page is different to in the Scenario",shopPageObject.verifyPricePorductList(min,max));
+
     }
 
     @When("the user click on a product {string}")
-    public void theUserClickOnAProduct(String arg0) {
+    public void theUserClickOnAProduct(String category) {
+     shopPageObject.selectProductCategory(category);
+     Assert.assertTrue("At least a book don't display in the page",shopPageObject.waitProductListExists());
     }
 
     @Then("the user can view only that particular product and {string}")
-    public void theUserCanViewOnlyThatParticularProductAnd(String arg0) {
+    public void userCanViewOnlyThatParticularProductAndQuantity(String quantity) {
+
+     Assert.assertTrue("The quantity in the page isn't equal to in the scenario", shopPageObject.compareProductQuantity(Integer.parseInt(quantity)));
     }
 
     @Given("the user click on sorting dropdown")

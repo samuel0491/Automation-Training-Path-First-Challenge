@@ -2,6 +2,7 @@ package com.managers;
 
 import com.login.pageobject.LoginPageObject;
 import com.myaccount.pageobject.MyAccountPageObject;
+import com.shop.ShopPageObject;
 import org.openqa.selenium.WebDriver;
 
 public class PageObjectManager {
@@ -9,6 +10,7 @@ public class PageObjectManager {
     private WebDriver driver;
     private LoginPageObject loginPageObject;
     private MyAccountPageObject myAccountPageObject;
+    private ShopPageObject shopPageObject;
 
     public PageObjectManager(WebDriver driver){
 
@@ -29,4 +31,11 @@ public class PageObjectManager {
             return myAccountPageObject;
     }
 
+    public ShopPageObject getShopPageObject(){
+
+        if(shopPageObject == null)
+            return shopPageObject = new ShopPageObject(driver);
+        else
+            return shopPageObject;
+    }
 }
