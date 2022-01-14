@@ -8,6 +8,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.Select;
 
 import java.util.List;
 
@@ -44,6 +45,9 @@ public class ShopPageObject extends BasePage {
 
     @FindBy(how = How.XPATH, using = "//*[@id='woocommerce_product_categories-2']/ul/li")
     private List<WebElement> productCategories;
+
+    @FindBy(how = How.CSS, using = "#content > form > select" )
+    private WebElement defaultSorting;
 
     public void clickOnShopOption(){
 
@@ -126,5 +130,18 @@ public class ShopPageObject extends BasePage {
 
         return getCountElementsList(productListFiltered) == quantity;
 
+    }
+    public void selectDefaultSorting(String search){
+
+        selectDropdownList(defaultSorting,search,1);
+
+    }
+
+    public boolean sortByPrice(){
+
+        for(int i = 0; i< getCountElementsList(productPriceList);i++){
+
+        }
+        return true;
     }
 }
