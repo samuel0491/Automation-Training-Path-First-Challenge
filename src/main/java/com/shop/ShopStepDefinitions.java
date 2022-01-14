@@ -11,14 +11,14 @@ import org.junit.Assert;
 
 public class ShopStepDefinitions {
 
-   // private final LoginPageObject loginPageObject;
+    private final LoginPageObject loginPageObject;
     private final ShopPageObject shopPageObject;
     private final TestContext context;
 
     public ShopStepDefinitions(TestContext context){
 
         this.context = context;
-       // loginPageObject = context.getPageObjectManager().getLoginPageObject();
+        loginPageObject = context.getPageObjectManager().getLoginPageObject();
         shopPageObject = context.getPageObjectManager().getShopPageObject();
     }
 
@@ -73,16 +73,17 @@ public class ShopStepDefinitions {
      Assert.assertTrue("The quantity in the page isn't equal to in the scenario", shopPageObject.compareProductQuantity(Integer.parseInt(quantity)));
     }
 
-    @Given("the user click on sorting dropdown")
-    public void theUserClickOnSortingDropdown() {
-    }
+    @Given("the user select a {string} to sort")
+    public void theUserSelectAToSort(String criteria) {
+     shopPageObject.selectDefaultSorting(criteria);
 
-    @When("the user select a {string} to sort")
-    public void theUserSelectAToSort(String arg0) {
+        Assert.assertTrue("At least a book don't display in the page",shopPageObject.waitProductListExists());
+
     }
 
     @Then("the user can view the products ordered by criterion selected")
     public void theUserCanViewTheProductsOrderedByCriterionSelected() {
+
     }
 
     @When("the user click on a product with Sale! icon")

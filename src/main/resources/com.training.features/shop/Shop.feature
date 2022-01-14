@@ -10,28 +10,26 @@ Feature: Shop
 #    When  the user click on the filter button
 #    Then  user can view books only between 400 to 500 rps price
 
-  Scenario Outline: TC002 Shop product categories
-    When the user click on a product "<category>"
-    Then the user can view only that particular product and "<quantity>"
-    Examples:
-      |category  |   quantity|
-      |Android   |          1|
-      |HTML      |          3|
-      |JavaScript|          3|
-      |selenium  |          1|
+#  Scenario Outline: TC002 Shop product categories
+#    When the user click on a product "<category>"
+#    Then the user can view only that particular product and "<quantity>"
+#    Examples:
+#      |category  |   quantity|
+#      |Android   |          1|
+#      |HTML      |          3|
+#      |JavaScript|          3|
+#      |selenium  |          1|
 
   Scenario Outline: TC003 Shop sorting by different criterial
-     Given the user click on sorting dropdown
-     When  the user select a "<criteria>" to sort
+     Given the user select a "<criteria>" to sort
      Then the user can view the products ordered by criterion selected
     Examples:
-      |criteria                  |
-#      |Default sorting           |
-      |Sort by popularity        |
-#      |Sort by average rating    |
-#      |Sort by newness           |
-#      |Sort by price: low to high|
-#      |Sort by price: high to low|
+      |criteria  |
+#      |popularity|
+#      |rating    |
+#      |Sort by newness|
+      |price     |
+      |price-desc|
 #
 #  Scenario: TC004 Shop Sale
 #    When the user click on a product with Sale! icon

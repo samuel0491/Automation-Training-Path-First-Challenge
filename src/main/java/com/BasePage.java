@@ -7,6 +7,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Action;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import java.time.Duration;
 import java.util.List;
@@ -95,6 +96,22 @@ public class BasePage {
     public int getCountElementsList(List<WebElement> list){
 
         return list.size();
+
+    }
+
+    public void selectDropdownList(WebElement element, String search, int searchCriteria){
+
+        Select dropdown = new Select(element);
+        switch(searchCriteria){
+            case 1: dropdown.selectByValue(search);
+                break;
+            case 2: dropdown.selectByVisibleText(search);
+                break;
+            case 3: dropdown.selectByIndex(Integer.parseInt(search));
+                break;
+            default: dropdown.selectByValue(search);
+        }
+
 
     }
 
