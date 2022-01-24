@@ -1,4 +1,4 @@
-package com;
+package com.common;
 
 import com.managers.FileReaderManager;
 import org.openqa.selenium.JavascriptExecutor;
@@ -53,12 +53,6 @@ public class BasePage {
         wait.until(ExpectedConditions.visibilityOf(element));
     }
 
-    public void waitUrlContain(String URL){
-
-        wait.until(ExpectedConditions.urlContains(URL));
-
-    }
-
     public void backButtonBrowser(){
 
         driver.navigate().back();
@@ -74,23 +68,40 @@ public class BasePage {
         return title.contentEquals(getPageTitle());
     }
 
-//    public void moveSliderBarElementJs(WebElement sideBar,double min,double max){
-//        js.executeScript("arguments[0].setAttribute('style','left: "+min+"%')",sideBar);
-//        js.executeScript("arguments[0].setAttribute('style','width: "+max+"%')",sideBar);
-//   }
-//public void moveSliderBarElement(WebElement sideBar,int x) {
-//
-//    Actions moveSlider = new Actions(driver);
-//    Action action = moveSlider.dragAndDropBy(sideBar,x,0).build();
-//
-//    action.perform();
-//
-//}
+    public boolean moveSliderBarLeftElement(WebElement sideBar,int min_price,int currentPrice) {
 
-    public void setMinMaxPriceByUrl(int min,int max){
+        boolean isPriceSet = false;
+        Actions moveSlider = new Actions(driver);
+        Action action;
 
-        driver.get(driver.getCurrentUrl()+ String.format("/?min_price=%s&max_price=%s", min,max));
+        if(currentPrice < min_price) {
+            action = moveSlider.dragAndDropBy(sideBar, 1, 0).build();
+            action.perform();
+        }
 
+        if(currentPrice == min_price){
+            isPriceSet = true;
+        }
+
+        return isPriceSet;
+    }
+
+    public boolean moveSliderBarRightElement(WebElement sideBar,int max_price,int currentPrice) {
+
+        boolean isPriceSet = false;
+        Actions moveSlider = new Actions(driver);
+        //Action action;
+
+        if(currentPrice > max_price) {
+            Action action = moveSlider.dragAndDropBy(sideBar, -1, 0).build();
+            action.perform();
+        }
+
+         if(currentPrice == max_price){
+            isPriceSet = true;
+        }
+
+        return isPriceSet;
     }
 
     public int getCountElementsList(List<WebElement> list){
@@ -109,10 +120,8 @@ public class BasePage {
                 break;
             case 3: dropdown.selectByIndex(Integer.parseInt(search));
                 break;
-            default: dropdown.selectByValue(search);
         }
 
 
     }
-
 }

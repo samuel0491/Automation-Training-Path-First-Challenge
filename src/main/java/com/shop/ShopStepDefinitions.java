@@ -1,7 +1,6 @@
 package com.shop;
 
 import com.cucumber.TestContext;
-import com.login.pageobject.LoginPageObject;
 import com.managers.FileReaderManager;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
@@ -11,14 +10,12 @@ import org.junit.Assert;
 
 public class ShopStepDefinitions {
 
-    private final LoginPageObject loginPageObject;
-    private final ShopPageObject shopPageObject;
-    private final TestContext context;
+    private ShopPageObject shopPageObject;
+    private TestContext context;
 
     public ShopStepDefinitions(TestContext context){
 
         this.context = context;
-        loginPageObject = context.getPageObjectManager().getLoginPageObject();
         shopPageObject = context.getPageObjectManager().getShopPageObject();
     }
 
@@ -49,15 +46,15 @@ public class ShopStepDefinitions {
     }
 
     @When("the user click on the filter button")
-    public void theUserClickOnTheFilterButton() {
+    public void userClickOnTheFilterButton() {
 
      shopPageObject.clickOnFilterButton();
     }
 
     @Then("user can view books only between {int} to {int} rps price")
-    public void userCanViewBooksOnlyBetweenToMinMaxPrices(double min, double max) {
+    public void userCanViewBooksOnlyBetweenToMinMaxPrices(int min, int max) {
 
-     Assert.assertTrue("At least a book price in the page is different to in the Scenario",shopPageObject.verifyPricePorductList(min,max));
+     Assert.assertTrue("At least a book price in the page is different to in the Scenario",shopPageObject.verifyPriceProductList(min,max));
 
     }
 
@@ -74,24 +71,28 @@ public class ShopStepDefinitions {
     }
 
     @Given("the user select a {string} to sort")
-    public void theUserSelectAToSort(String criteria) {
+    public void userSelectAToSort(String criteria) {
      shopPageObject.selectDefaultSorting(criteria);
 
         Assert.assertTrue("At least a book don't display in the page",shopPageObject.waitProductListExists());
 
     }
 
-    @Then("the user can view the products ordered by criterion selected")
-    public void theUserCanViewTheProductsOrderedByCriterionSelected() {
+    @Then("the user can view the products ordered by {string} selected")
+    public void userCanViewTheProductsOrderedBySelected(String criterio) {
 
+        Assert.assertTrue("List product sorted aren't equals",shopPageObject.isSortByPriceRight(criterio));
     }
 
     @When("the user click on a product with Sale! icon")
-    public void theUserClickOnAProductWithSaleIcon() {
+    public void clickOnAProductWithSaleIcon() {
+        Assert.assertTrue("Product with Sale incon was not found!",shopPageObject.getProductWithDiscount() != null);
     }
 
     @Then("the detail product corresponding is show up")
-    public void theDetailProductCorrespondingIsShowUp() {
+    public void detailProductCorrespondingIsShowUp() {
+        shopPageObject.waitUntilProductDetailsPageLoad();
+        Assert.assertTrue("Product clicked is not equal to the product details.",shopPageObject.isTheSameProductDetailsVsProduct());
     }
 
     @And("the user can see the actual price with old price stricken")
@@ -145,4 +146,5 @@ public class ShopStepDefinitions {
     @Then("the user completes the process and can see the Order confirmation page")
     public void theUserCompletesTheProcessAndCanSeeTheOrderConfirmationPage() {
     }
+
 }

@@ -1,15 +1,13 @@
 package com.shop;
 
-import com.BasePage;
-import io.cucumber.messages.Messages;
+import com.common.BasePage;
+import com.common.Utils;
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.How;
-import org.openqa.selenium.support.PageFactory;
-import org.openqa.selenium.support.ui.Select;
-
+import org.openqa.selenium.support.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ShopPageObject extends BasePage {
@@ -19,14 +17,13 @@ public class ShopPageObject extends BasePage {
         PageFactory.initElements(driver,this);
     }
 
+    private String productTile;
+
     @FindBy(how = How.CSS, using = "#menu-item-40")
     private WebElement shopOption;
 
     @FindBy(how = How.CSS, using = "#sidebar")
     private WebElement shopSideBar;
-
-    @FindBy(how = How.XPATH, using = "//*[@id=\'woocommerce_price_filter-2\']/form/div/div[1]/div")
-    private WebElement parentPriceSlider;
 
     @FindBy(how = How.XPATH, using = "//*[@id='woocommerce_price_filter-2']/form/div/div[1]/span[1]")
     private WebElement leftPriceSlider;
@@ -37,17 +34,27 @@ public class ShopPageObject extends BasePage {
     @FindBy(how = How.CSS, using = "#woocommerce_price_filter-2 > form > div > div.price_slider_amount > button")
     private WebElement filterButton;
 
-    @FindBy(how = How.CSS, using = "#content > ul > li")
+    @FindBy(how = How.XPATH,using = "//*[@id='content']/ul/li")//"#content > ul > li")
     private List<WebElement> productListFiltered;
 
-    @FindBy(how = How.XPATH, using = "//*[@id='content']/ul/li/a/span[@class='price']/*[self::ins or self::span]")
+    @FindBys(@FindBy(how = How.XPATH, using = "//*[@id='content']/ul/li/a/span[@class='price']/*[self::ins or self::span]"))
     private List<WebElement> productPriceList;
 
-    @FindBy(how = How.XPATH, using = "//*[@id='woocommerce_product_categories-2']/ul/li")
+    @FindBys(@FindBy(how = How.XPATH, using = "//*[@id='woocommerce_product_categories-2']/ul/li"))
     private List<WebElement> productCategories;
 
     @FindBy(how = How.CSS, using = "#content > form > select" )
     private WebElement defaultSorting;
+
+    @FindBy(how = How.XPATH,using = "//*[@id='woocommerce_price_filter-2']/form//span[@class='from']")
+    private WebElement minPrice;
+
+    @FindBy(how = How.XPATH,using = "//*[@id='woocommerce_price_filter-2']/form//span[@class='to']")
+    private WebElement maxPrice;
+
+    @FindBy(how = How.XPATH, using = "//*[div[contains(@id,'product')]]/div/div[2]/h1[@class='product_title entry-title']")
+    private WebElement productDetailsTitle;
+
 
     public void clickOnShopOption(){
 
@@ -60,19 +67,17 @@ public class ShopPageObject extends BasePage {
         return shopSideBar.isDisplayed();
     }
 
-//    public void getCurrentParentPercent(){
-//
-//        System.out.println(parentPriceSlider.getAttribute("style"));
-//    }
-
     public void movePriceSideBar(int min, int max){
-        //TODO: implement this function
-        //moveSliderBarElement(leftPriceSlider,58);
-        //moveSliderBarElement(rightPriceSlider,0);
-        //moveSliderBarElementJs(parentPriceSlider,100,0);
 
-        setMinMaxPriceByUrl(min,max);
+        int currentMinPrice,currentMaxPrice;
 
+        do{
+            currentMinPrice = Integer.parseInt(minPrice.getText().replaceAll("[^0-9.]", ""));
+            currentMaxPrice = Integer.parseInt(maxPrice.getText().replaceAll("[^0-9.]", ""));
+
+        }while(!(moveSliderBarLeftElement(leftPriceSlider,min,currentMinPrice)
+                && moveSliderBarRightElement(rightPriceSlider,max,currentMaxPrice))
+        );
     }
 
     public void clickOnFilterButton(){
@@ -80,16 +85,17 @@ public class ShopPageObject extends BasePage {
         clickOnButtonOption(filterButton);
     }
 
-    public boolean verifyPricePorductList(double min, double max){
+    public boolean verifyPriceProductList(int min, int max){
 
         boolean right = false;
 
-        if(max >= min) {
-
-            for (int i = 0; i < getCountElementsList(productPriceList); i++) {
-
-                if (Double.parseDouble(productPriceList.get(i).getText().replaceAll("[^0-9\\.]", "")) >= min
-                        && Double.parseDouble(productPriceList.get(i).getText().replaceAll("[^0-9\\.]", "")) <= max)
+        if(max >= min)
+        {
+            for (int i = 0; i < getCountElementsList(productPriceList); i++)
+            {
+                //TODO: figure out why the string value 450.00 throw an execution exception when it's trying to convert it to integer
+                if ((int)Double.parseDouble(productPriceList.get(i).getText().replaceAll("[^0-9.]", "")) >= min
+                        && (int)Double.parseDouble(productPriceList.get(i).getText().replaceAll("[^0-9.]", "")) <= max)
                 {
                     right = true;
                 }
@@ -101,10 +107,6 @@ public class ShopPageObject extends BasePage {
             }
         }
 
-        else{
-            right = false;
-        }
-
         return right;
     }
 
@@ -112,9 +114,9 @@ public class ShopPageObject extends BasePage {
 
         for(int i=0; i < getCountElementsList(productCategories); i++)
         {
-            if(productCategories.get(i).findElement(By.xpath("//a[contains(text(),'"+product+"')]")).getText().contentEquals(product))
+            if(productCategories.get(i).findElements(By.xpath("//a[contains(text(),'"+product+"')]")).get(i).getText().contentEquals(product))
             {
-                clickOnButtonOption(productCategories.get(i).findElement(By.xpath("//a[contains(text(),'"+product+"')]")));
+                clickOnButtonOption(productCategories.get(i).findElements(By.xpath("//a[contains(text(),'"+product+"')]")).get(i));
                     break;
             }
         }
@@ -137,11 +139,76 @@ public class ShopPageObject extends BasePage {
 
     }
 
-    public boolean sortByPrice(){
+    public boolean isSortByPriceRight(String criteria){
 
-        for(int i = 0; i< getCountElementsList(productPriceList);i++){
+        boolean sorted = false;
 
+        for(int i=0; i < getCountElementsList(productListFiltered); i++)
+        {
+            if(productListFiltered.get(i).findElement(By.xpath("a[@rel]")).getAttribute("href").contains("/product/selenium-ruby")
+            || productListFiltered.get(i).findElement(By.xpath("a[@rel]")).getAttribute("href").contains("orderby="+criteria)
+            || productListFiltered.get(i).findElement(By.xpath("a[@rel]")).getAttribute("href").contains("/shop/?"))
+            {
+                sorted = true;
+            }
+
+            else{
+                sorted = false;
+                break;
+            }
         }
-        return true;
+
+        return sorted;
     }
+
+    public String getProductWithDiscount() {
+
+        String saleIcon = "a/span[@class='onsale']";
+        List<WebElement> itemsOnSaleIcon = new ArrayList<>();
+
+        for(int i=0; i < productListFiltered.size(); i++)
+        {
+            try{
+                if(productListFiltered.get(i).findElement(By.xpath(saleIcon)).isDisplayed())
+                {
+                    itemsOnSaleIcon.add(productListFiltered.get(i));
+                }
+
+            }catch (NoSuchElementException e){
+                System.out.println("For the index "+i+" ["+saleIcon+"] doesn't exists");
+            }
+       }
+
+        int element = Utils.getRandomInteger(getCountElementsList(itemsOnSaleIcon));
+
+        if(element > 0)
+        {
+            productTile = itemsOnSaleIcon.get(element-1).findElement(By.xpath("a[1]/img")).getAttribute("title");
+            itemsOnSaleIcon.get(element-1).click();
+        }
+
+        else
+        {
+            productTile = itemsOnSaleIcon.get(element).findElement(By.xpath("a[1]/img")).getAttribute("title");
+            itemsOnSaleIcon.get(element).click();
+        }
+
+        return  productTile;
+    }
+
+    public void waitUntilProductDetailsPageLoad(){
+
+        waitVisibilityOfElement(productDetailsTitle);
+    }
+
+    public String getProductTitleOnDetailsPage(){
+
+        return productDetailsTitle.getText();
+    }
+
+    public boolean isTheSameProductDetailsVsProduct(){
+
+        return this.productTile.contentEquals(this.getProductTitleOnDetailsPage());
+    }
+
 }

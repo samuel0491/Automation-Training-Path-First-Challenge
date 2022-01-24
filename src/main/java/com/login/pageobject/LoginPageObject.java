@@ -1,6 +1,6 @@
 package com.login.pageobject;
 
-import com.BasePage;
+import com.common.BasePage;
 import io.cucumber.datatable.DataTable;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;

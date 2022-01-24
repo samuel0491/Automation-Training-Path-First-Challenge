@@ -5,37 +5,37 @@ Feature: Shop
     And   the user click on Shop menu
     Then  the shop page is displayed
 
-#  Scenario: TC001 Shop filter by price
-#    Given the user adjust the filter by price between 400 500 rps
-#    When  the user click on the filter button
-#    Then  user can view books only between 400 to 500 rps price
+  Scenario: TC001 Shop filter by price
+    Given the user adjust the filter by price between 150 490 rps
+    When  the user click on the filter button
+    Then  user can view books only between 150 to 490 rps price
 
-#  Scenario Outline: TC002 Shop product categories
-#    When the user click on a product "<category>"
-#    Then the user can view only that particular product and "<quantity>"
-#    Examples:
-#      |category  |   quantity|
-#      |Android   |          1|
-#      |HTML      |          3|
-#      |JavaScript|          3|
-#      |selenium  |          1|
+  Scenario Outline: TC002 Shop product categories
+    When the user click on a product "<category>"
+    Then the user can view only that particular product and "<quantity>"
+    Examples:
+      |category  |   quantity|
+      |Android   |          1|
+      |HTML      |          3|
+      |JavaScript|          3|
+      |selenium  |          1|
 
   Scenario Outline: TC003 Shop sorting by different criterial
      Given the user select a "<criteria>" to sort
-     Then the user can view the products ordered by criterion selected
+     Then the user can view the products ordered by "<criteria>" selected
     Examples:
       |criteria  |
-#      |popularity|
-#      |rating    |
-#      |Sort by newness|
+      |popularity|
+      |menu_order|
+      |date      |
       |price     |
       |price-desc|
-#
-#  Scenario: TC004 Shop Sale
-#    When the user click on a product with Sale! icon
-#    Then the detail product corresponding is show up
-#    And  the user can see the actual price with old price stricken
-#
+
+  Scenario: TC004 Shop Sale
+    When the user click on a product with Sale! icon
+    Then the detail product corresponding is show up
+    And  the user can see the actual price with old price stricken
+
 #  Scenario Outline: TC005 Shop Add to Basket-view Basket
 #    Given the user Click on the Add To Basket button
 #    And   the user can view the product in the Menu item with price
